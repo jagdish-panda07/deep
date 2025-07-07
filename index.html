@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodMatch Entertainment</title>
+    <style>
+        :root {
+            --happy: #FFD700;
+            --sad: #1E90FF;
+            --angry: #FF4500;
+            --relaxed: #32CD32;
+            --excited: #FF69B4;
+            --neutral: #A9A9A9;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .mood-selector {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #6e48aa;
+        }
+        
+        .mood-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .mood-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .mood-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .happy {
+            background-color: var(--happy);
+        }
+        
+        .sad {
+            background-color: var(--sad);
+            color: white;
+        }
+        
+        .angry {
+            background-color: var(--angry);
+            color: white;
+        }
+        
+        .relaxed {
+            background-color: var(--relaxed);
+            color: white;
+        }
+        
+        .excited {
+            background-color: var(--excited);
+            color: white;
+        }
+        
+        .neutral {
+            background-color: var(--neutral);
+            color: white;
+        }
+        
+        .recommendations {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .category {
+            margin-bottom: 2rem;
+        }
+        .category h3 {
+            border-bottom: 2px solid #6e48aa;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .item {
+            background: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .item-info {
+            padding: 1rem;
+        }
+        .item-info h4 {
+            margin: 0 0 0.5rem 0;
+        }
+        .item-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            background: #333;
+            color: white;
+            margin-top: 2rem;
+        }
+        @media (max-width: 768px) {
+            .mood-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            .mood-btn {
+                width: 80%;
+                justify-content: center;
+            }
+            .items {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MoodMatch Entertainment</h1>
+        <p>Discover perfect movies, shows, anime, and music for your current mood</p>
+    </header>
+    <div class="container">
+        <section class="mood-selector">
+            <h2>How are you feeling today?</h2>
+            <div class="mood-options">
+                <button class="mood-btn happy" onclick="showRecommendations('happy')">
+                    <span>😊</span> Happy
+                </button>
+                <button class="mood-btn sad" onclick="showRecommendations('sad')">
+                    <span>😢</span> Sad
+                </button>
+                <button class="mood-btn angry" onclick="showRecommendations('angry')">
+                    <span>😠</span> Angry
+                </button>
+                <button class="mood-btn relaxed" onclick="showRecommendations('relaxed')">
+                    <span>😌</span> Relaxed
+                </button>
+                <button class="mood-btn excited" onclick="showRecommendations('excited')">
+                    <span>🤩</span> Excited
+                </button>
+                <button class="mood-btn neutral" onclick="showRecommendations('neutral')">
+                    <span>😐</span> Neutral
+                </button>
+            </div>
+        </section>
+        <section id="recommendations" class="recommendations">
+            <h2 id="mood-title">Recommendations for Happy Mood</h2>
+            <div class="category">
+                <h3>Movies</h3>
+                <div id="movies" class="items">
+                    <!-- Movies will be inserted here by JavaScript -->
+                </div>
+            </div>
+
+            <div class="category">
+                <h3>Web Series</h3>
+                <div id="series" class="items">
+                </div>
+            </div>
+            <div class="category">
+                <h3>Anime</h3>
+                <div id="anime" class="items">
+                </div>
+            </div>
+            <div class="category">
+                <h3>Music</h3>
+                <div id="music" class="items">
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 MoodMatch Entertainment | Find your perfect entertainment match</p>
+    </footer>
+    
+    <script>
+        const recommendations = {
+            happy: {
+                movies: [
+                    { title: "The Intouchables", description: "Heartwarming friendship story", image: "https://m.media-amazon.com/images/M/MV5BMTYxNDA3MDQwNl5BMl5BanBnXkFtZTcwNTU4Mzc1Nw@@._V1_.jpg" },
+                    { title: "La La Land", description: "Joyful musical romance", image: "https://m.media-amazon.com/images/M/MV5BMzUzNDM2NzM2MV5BMl5BanBnXkFtZTgwNTM3NTg4OTE@._V1_.jpg" },
+                    { title: "The Grand Budapest Hotel", description: "Wes Anderson's colorful comedy", image: "https://m.media-amazon.com/images/M/MV5BMzM5NjUxOTEyMl5BMl5BanBnXkFtZTgwNjEyMDM0MDE@._V1_.jpg" },
+                    { title: "Amélie", description: "Whimsical French romance", image: "https://m.media-amazon.com/images/M/MV5BNDg4NjM1YjMtYmNhZC00MjM0LWFiZmYtNGY1YjA3MzZmODc5XkEyXkFqcGdeQXVyNDk3NzU2MTQ@._V1_.jpg" }
+                ],
+                series: [
+                    { title: "Parks and Recreation", description: "Uplifting workplace comedy", image: "https://m.media-amazon.com/images/M/MV5BMjA5MjUxNDgwNF5BMl5BanBnXkFtZTgwMDk5NTMwNTM@._V1_.jpg" },
+                    { title: "The Good Place", description: "Philosophical comedy", image: "https://m.media-amazon.com/images/M/MV5BYmMxNjM1NmUtODU2NC00M2Q3LTliOTAtYjQxNzQ3NDIwZjVjXkEyXkFqcGdeQXVyODUxOTU0OTg@._V1_.jpg" },
+                    { title: "Ted Lasso", description: "Optimistic sports comedy", image: "https://m.media-amazon.com/images/M/MV5BMDVmODUzNmEtMGMxZC00NWUzLTkxMTAtMDM5OTQzMWE0ZDM3XkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg" },
+                    { title: "Schitt's Creek", description: "Heartwarming family comedy", image: "https://m.media-amazon.com/images/M/MV5BNWQ1ZmM3MTQtNTVhZC00MWVlLWI5ZjgtYmZiYWQxZjUzZWM0XkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_.jpg" }
+                ],
+                anime: [
+                    { title: "My Neighbor Totoro", description: "Whimsical Studio Ghibli film", image: "https://m.media-amazon.com/images/M/MV5BYzJjMTYyMjQtZDI0My00ZjE2LTkyNGYtOTllNGQxNDMyZjE0XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg" },
+                    { title: "Haikyuu!!", description: "Energetic sports anime", image: "https://m.media-amazon.com/images/M/MV5BNzQ1MmJjZDUtMmI5OC00ZDk2LThkODQtODgwYmU0MTIzNDhmXkEyXkFqcGdeQXVyNDgyODgxNjE@._V1_.jpg" },
+                    { title: "K-On!", description: "Lighthearted music anime", image: "https://m.media-amazon.com/images/M/MV5BNzMzNTJjODMtMzhjMC00Mzg0LThkMzYtNmU3YTAwMTc1NGFjXkEyXkFqcGdeQXVyNjc2NjA5MTU@._V1_.jpg" },
+                    { title: "Barakamon", description: "Heartwarming slice-of-life", image: "https://m.media-amazon.com/images/M/MV5BMTgzNjA1MjY3N15BMl5BanBnXkFtZTgwMjAyMjE3MTE@._V1_.jpg" }
+                ],
+                music: [
+                    { title: "Happy - Pharrell Williams", description: "Upbeat pop song", image: "https://i.scdn.co/image/ab67616d0000b2738a3f0a3ca7929dea23cd274c" },
+                    { title: "Don't Stop Me Now - Queen", description: "Energetic classic", image: "https://i.scdn.co/image/ab67616d0000b273e8b7b1bdc1a4e788cb3a4b1e" },
+                    { title: "Walking on Sunshine - Katrina & The Waves", description: "80s feel-good hit", image: "https://i.scdn.co/image/ab67616d0000b273d5e1c7b8b7d0a3c5e1c7b8b7" },
+                    { title: "Good Vibrations - The Beach Boys", description: "Classic happy tune", image: "https://i.scdn.co/image/ab67616d0000b273d5e1c7b8b7d0a3c5e1c7b8b7" }
+                ]
+            },
+            sad: {
+                movies: [
+                    { title: "The Pursuit of Happyness", description: "Inspiring struggle story", image: "https://m.media-amazon.com/images/M/MV5BMTQ5NjQ0NDI3NF5BMl5BanBnXkFtZTcwNDI0MjEzMw@@._V1_.jpg" },
+                    { title: "A Silent Voice", description: "Emotional anime film", image: "https://m.media-amazon.com/images/M/MV5BZGRkOGMxYTUtZTBhYS00NzI3LWEzMDQtOWRhMmNjNjJjMzM4XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg" },
+                    { title: "Manchester by the Sea", description: "Powerful drama", image: "https://m.media-amazon.com/images/M/MV5BMTEyNzc4NjgzMl5BMl5BanBnXkFtZTgwNzE2Mzg0MDI@._V1_.jpg" },
+                    { title: "Her", description: "Poignant sci-fi romance", image: "https://m.media-amazon.com/images/M/MV5BMjA1Nzk0OTM2OF5BMl5BanBnXkFtZTgwNjU2NjEwMDE@._V1_.jpg" }
+                ],
+                series: [
+                    { title: "This Is Us", description: "Emotional family drama", image: "https://m.media-amazon.com/images/M/MV5BNzY1YjIxOGMtOTAyZC00YTcyLWFhMzQtZTJkYTljYzU0MGRlXkEyXkFqcGdeQXVyMTAwMzM3NDI3._V1_.jpg" },
+                    { title: "BoJack Horseman", description: "Dark animated comedy", image: "https://m.media-amazon.com/images/M/MV5BYWQwMDNkM2MtODU4OS00OTY3LTgwOTItNjE2Yzc0MzRkMDllXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg" },
+                    { title: "After Life", description: "Grief and dark humor", image: "https://m.media-amazon.com/images/M/MV5BZjdjOWIxMDgtYTgwNS00MjE4LTliZWYtZGI1NDhhZmIyYjM1XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg" },
+                    { title: "Normal People", description: "Intimate romantic drama", image: "https://m.media-amazon.com/images/M/MV5BNzMzYmRiNGEtMDg5OC00OGZmLWFmNDktYzRlZTFkZmZiMjAzXkEyXkFqcGdeQXVyMTE2OTE2MzE1._V1_.jpg" }
+                ],
+                anime: [
+                    { title: "Your Lie in April", description: "Emotional music anime", image: "https://m.media-amazon.com/images/M/MV5BYThlNWY5ZDgtYTIxNC00ZjdiLWJmNGUtMDFjMDlmZTAzOWFiXkEyXkFqcGdeQXVyNTM4NzAzNjc@._V1_.jpg" },
+                    { title: "Clannad: After Story", description: "Heart-wrenching drama", image: "https://m.media-amazon.com/images/M/MV5BNzJhMDY2NzUtYzE2Ny00YWVmLWJjNWYtYWQ4NDQ4YzM2NDVkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" },
+                    { title: "Violet Evergarden", description: "Beautiful emotional journey", image: "https://m.media-amazon.com/images/M/MV5BNTk1NzI5MzQwMV5BMl5BanBnXkFtZTgwOTQ3NDc4NTM@._V1_.jpg" },
+                    { title: "Anohana: The Flower We Saw That Day", description: "Touching ghost story", image: "https://m.media-amazon.com/images/M/MV5BZDY0YzQ0MGQtOWY3MC00OTU4LWI1MWEtNjU3N2Q5Y2VkZTE3XkEyXkFqcGdeQXVyMzgxODM4NjM@._V1_.jpg" }
+                ],
+                music: [
+                    { title: "Someone Like You - Adele", description: "Powerful ballad", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Hurt - Johnny Cash", description: "Emotional cover", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Fix You - Coldplay", description: "Comforting melody", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "The Night We Met - Lord Huron", description: "Melancholic folk", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" }
+                ]
+            },
+            angry: {
+                movies: [
+                    { title: "Fight Club", description: "Cathartic rebellion", image: "https://m.media-amazon.com/images/M/MV5BMmEzNTkxYjQtZTc0MC00YTVjLTg5ZTEtZWMwOWVlYzY0NWIwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg" },
+                    { title: "V for Vendetta", description: "Revolutionary tale", image: "https://m.media-amazon.com/images/M/MV5BOTI5ODc3NzExNV5BMl5BanBnXkFtZTcwNzYxNzQzMw@@._V1_.jpg" },
+                    { title: "John Wick", description: "High-octane revenge", image: "https://m.media-amazon.com/images/M/MV5BMTU2NjA1ODgzMF5BMl5BanBnXkFtZTgwMTM2MTI4MjE@._V1_.jpg" },
+                    { title: "Mad Max: Fury Road", description: "Non-stop action", image: "https://m.media-amazon.com/images/M/MV5BN2EwM2I5OWMtMGQyMi00Zjg1LWJkNTctZTdjYTA4OGUwZjMyXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg" }
+                ],
+                series: [
+                    { title: "The Boys", description: "Dark superhero satire", image: "https://m.media-amazon.com/images/M/MV5BNGEyOGJiNWEtMTgwMi00ODU4LTlkMjItZWI4NjFmMzgxZGY2XkEyXkFqcGdeQXVyNjcyNjcyMzQ@._V1_.jpg" },
+                    { title: "Daredevil", description: "Gritty superhero drama", image: "https://m.media-amazon.com/images/M/MV5BODcwOTg2MDE3NF5BMl5BanBnXkFtZTgwNTUyNTY1NjM@._V1_.jpg" },
+                    { title: "Peaky Blinders", description: "Gangster family drama", image: "https://m.media-amazon.com/images/M/MV5BMTkzNjEzMDEzMF5BMl5BanBnXkFtZTgwMDI0MjE4MjE@._V1_.jpg" },
+                    { title: "Punisher", description: "Brutal vigilante story", image: "https://m.media-amazon.com/images/M/MV5BMTExODIwOTUxNzFeQTJeQWpwZ15BbWU4MDE5MDA0MTcz._V1_.jpg" }
+                ],
+                anime: [
+                    { title: "Attack on Titan", description: "Intense action drama", image: "https://m.media-amazon.com/images/M/MV5BMTY5ODk1NzUyMl5BMl5BanBnXkFtZTgwMjUyNzEyMTE@._V1_.jpg" },
+                    { title: "Berserk", description: "Dark fantasy epic", image: "https://m.media-amazon.com/images/M/MV5BZWIzNzQ3ZDctODYxYi00YjUwLTg1MDgtMDk4M2FiNjEwYjQ4XkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" },
+                    { title: "Death Note", description: "Psychological thriller", image: "https://m.media-amazon.com/images/M/MV5BODkzMjhjYTQtYmQyOS00NmZlLTg3Y2UtYjkzN2JkNjRkZGEwXkEyXkFqcGdeQXVyNTM4MDQ5MDc@._V1_.jpg" },
+                    { title: "Tokyo Ghoul", description: "Dark supernatural", image: "https://m.media-amazon.com/images/M/MV5BN2Q1Y2I1MGYtMGNlZi00NTEwLTk0YmQtYzQ1YThiZTY5Y2VkXkEyXkFqcGdeQXVyMzgxODM4NjM@._V1_.jpg" }
+                ],
+                music: [
+                    { title: "Killing in the Name - Rage Against the Machine", description: "Angry protest song", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Break Stuff - Limp Bizkit", description: "Aggressive nu-metal", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Bulls on Parade - Rage Against the Machine", description: "Political rap-rock", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Du Hast - Rammstein", description: "Industrial metal", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" }
+                ]
+            },
+            relaxed: {
+                movies: [
+                    { title: "Chef", description: "Feel-good food journey", image: "https://m.media-amazon.com/images/M/MV5BYTQyNDQwMjYtZTY5YS00MGU2LWE5NzctMjM4Y2IyYjkwMjNkXkEyXkFqcGdeQXVyMTY5Nzc4MDY@._V1_.jpg" },
+                    { title: "The Secret Life of Walter Mitty", description: "Dreamy adventure", image: "https://m.media-amazon.com/images/M/MV5BODYwNDYxNDk1Nl5BMl5BanBnXkFtZTgwOTAwMTk2MDE@._V1_.jpg" },
+                    { title: "Paterson", description: "Quiet poetic drama", image: "https://m.media-amazon.com/images/M/MV5BMjEyNzg5MjM0NF5BMl5BanBnXkFtZTgwMzYzNjU2MDI@._V1_.jpg" },
+                    { title: "Lost in Translation", description: "Mellow Tokyo story", image: "https://m.media-amazon.com/images/M/MV5BMTI2NDI5ODk4N15BMl5BanBnXkFtZTYwMTI3NTE3._V1_.jpg" }
+                ],
+                series: [
+                    { title: "The Great British Bake Off", description: "Charming baking show", image: "https://m.media-amazon.com/images/M/MV5BYWM2N2I1N2YtYzQyYS00OTU1LTg0MWYtNTFkYTYyY2NhOTVjXkEyXkFqcGdeQXVyNjA5MjQ1OTQ@._V1_.jpg" },
+                    { title: "Midnight Diner", description: "Japanese comfort food stories", image: "https://m.media-amazon.com/images/M/MV5BM2I0MWVhZSItY2YwYi00Y2VhLWIzY2QtODg5ZTY0YmJkYjRkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" },
+                    { title: "Detectorists", description: "Gentle British comedy", image: "https://m.media-amazon.com/images/M/MV5BZGUyY2Q1Y2UtYjVjZi00Y2M0LTg1ZjItYzQ5YjYzYmI5MzU5XkEyXkFqcGdeQXVyMjQ1NjEyNzE@._V1_.jpg" },
+                    { title: "Joe Pera Talks With You", description: "Wholesome slow comedy", image: "https://m.media-amazon.com/images/M/MV5BZWI0YjY3ZjYtY2Y1Zi00ZDE4LWI0OGUtYjQ2YzUwYjA3YzU5XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg" }
+                ],
+                anime: [
+                    { title: "Mushi-Shi", description: "Meditative supernatural", image: "https://m.media-amazon.com/images/M/MV5BZjY1YzE2ZDYtOTAyZC00YTVkLTk5OGYtYTRmY2UwYmJmOWJmXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" },
+                    { title: "Natsume's Book of Friends", description: "Gentle supernatural", image: "https://m.media-amazon.com/images/M/MV5BZjJiYjU2ZDItY2Q5Yy00N2RiLWIxZTctY2Q4OTNiOTFkZjYwXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" },
+                    { title: "Aria the Animation", description: "Soothing slice-of-life", image: "https://m.media-amazon.com/images/M/MV5BNjUwYzFhZWItNDBlMC00MGI4LThhZDItYzM5ZGU5YzY0OTY5XkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" },
+                    { title: "Flying Witch", description: "Comfy witchy life", image: "https://m.media-amazon.com/images/M/MV5BNjUyNWU5YjQtYzQ4Ny00OTQ0LTg0YjktYjQ5YzVlY2Q4Y2Q0XkEyXkFqcGdeQXVyMzgxODM4NjM@._V1_.jpg" }
+                ],
+                music: [
+                    { title: "Weightless - Marconi Union", description: "Scientifically relaxing", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Clair de Lune - Debussy", description: "Classical piano", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Bloom - The Paper Kites", description: "Soft folk", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Deep Blue Day - Brian Eno", description: "Ambient soundscape", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" }
+                ]
+            },
+            excited: {
+                movies: [
+                    { title: "Mad Max: Fury Road", description: "Non-stop action", image: "https://m.media-amazon.com/images/M/MV5BN2EwM2I5OWMtMGQyMi00Zjg1LWJkNTctZTdjYTA4OGUwZjMyXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg" },
+                    { title: "Baby Driver", description: "High-energy heist film", image: "https://m.media-amazon.com/images/M/MV5BMjM3MjQ1MzkxNl5BMl5BanBnXkFtZTgwODk1ODgyMjI@._V1_.jpg" },
+                    { title: "The Raid", description: "Intense martial arts", image: "https://m.media-amazon.com/images/M/MV5BNGQ0MzI0ZGItYWM2Ny00YTE0LTk0YjUtNjM1YzA1YzVkOTVkXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_.jpg" },
+                    { title: "Scott Pilgrim vs. The World", description: "Hyper-stylized action", image: "https://m.media-amazon.com/images/M/MV5BNWI5ODc4MTAtN2U2NC00ZDk3LWE3NjAtNjIyODE2YTlhYjYwXkEyXkFqcGdeQXVyOTA3ODI3NDA@._V1_.jpg" }
+                ],
+                series: [
+                    { title: "Stranger Things", description: "Nostalgic sci-fi adventure", image: "https://m.media-amazon.com/images/M/MV5BMDZkYmVhNjMtNWU4MC00MDQxLWE3MjYtZGMzZWI1ZjhlOWJmXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg" },
+                    { title: "The Mandalorian", description: "Star Wars adventure", image: "https://m.media-amazon.com/images/M/MV5BZDhlMzY0ZGItZTcyNS00ZTAxLWIyMmYtZGQ2ODg5OWZiYmJkXkEyXkFqcGdeQXVyODkzNTgxMDg@._V1_.jpg" },
+                    { title: "Money Heist", description: "High-stakes thriller", image: "https://m.media-amazon.com/images/M/MV5BODI0ZTljYTMtODQ1NC00Njc1LTllZDYtMTY1ZWFjMzU3OWVjXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg" },
+                    { title: "Brooklyn Nine-Nine", description: "Fast-paced comedy", image: "https://m.media-amazon.com/images/M/MV5BNzVkYWY4NzYtMWFiZi00YzkwLThhZDItMjJhNzZkZWRlOGY3XkEyXkFqcGdeQXVyNDg4MjkzNDk@._V1_.jpg" }
+                ],
+                anime: [
+                    { title: "Demon Slayer", description: "Visually stunning action", image: "https://m.media-amazon.com/images/M/MV5BZjZjNzI5MDctY2Y4YS00NmM4LTljMmItZTFkOTExNGI3ODRhXkEyXkFqcGdeQXVyNjc3MjQzNTI@._V1_.jpg" },
+                    { title: "One Punch Man", description: "Hilarious superhero action", image: "https://m.media-amazon.com/images/M/MV5BMTNmZDE2NDEtNTg3MS00OTE1LThlZGUtOGZkMGFiYWM4ODkzXkEyXkFqcGdeQXVyNTgyNTA4MjM@._V1_.jpg" },
+                    { title: "Jujutsu Kaisen", description: "Supernatural battles", image: "https://m.media-amazon.com/images/M/MV5BNzQyYzU3Y2MtOWY2Yy00ZGM2LTg3ZTUtMDJkZTJiMmEzMjYxXkEyXkFqcGdeQXVyMTI2NTY3NDg5._V1_.jpg" },
+                    { title: "Mob Psycho 100", description: "Psychic action comedy", image: "https://m.media-amazon.com/images/M/MV5BZmE1NjIyNjYtMTVmMy00M2YyLTg4OWYtODViYjE5MGFiNDU1XkEyXkFqcGdeQXVyNTI3NjIyMjE@._V1_.jpg" }
+                ],
+                music: [
+                    { title: "Uptown Funk - Mark Ronson ft. Bruno Mars", description: "Energetic funk", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Thunderstruck - AC/DC", description: "High-voltage rock", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Can't Stop - Red Hot Chili Peppers", description: "Upbeat alternative", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Power - Kanye West", description: "Bombastic hip-hop", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" }
+                ]
+            },
+            neutral: {
+                movies: [
+                    { title: "The Social Network", description: "Engaging drama", image: "https://m.media-amazon.com/images/M/MV5BOGUyZDUxZjEtMmIzMC00MzlmLTg4MGItZWJmMzBhZjE0Mjc1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg" },
+                    { title: "Knives Out", description: "Clever whodunit", image: "https://m.media-amazon.com/images/M/MV5BMGUwZjliMTAtNzAxZi00MWNiLWE2NzgtZGUxMGQxZjhhNDRiXkEyXkFqcGdeQXVyNjU1NzU3MzE@._V1_.jpg" },
+                    { title: "The Grand Budapest Hotel", description: "Stylish comedy", image: "https://m.media-amazon.com/images/M/MV5BMzM5NjUxOTEyMl5BMl5BanBnXkFtZTgwNjEyMDM0MDE@._V1_.jpg" },
+                    { title: "Arrival", description: "Thoughtful sci-fi", image: "https://m.media-amazon.com/images/M/MV5BMTExMzU0ODcxNDheQTJeQWpwZ15BbWU4MDE1MzI1MzEx._V1_.jpg" }
+                ],
+                series: [
+                    { title: "Black Mirror", description: "Tech anthology series", image: "https://m.media-amazon.com/images/M/MV5BYTM3YWVhMDMtNjczMy00NGEyLWJhZDctYjNhMTRkNDE0ZTI1XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg" },
+                    { title: "The Crown", description: "Historical drama", image: "https://m.media-amazon.com/images/M/MV5BZTEyNjBjYTktMTU1MC00YzE3LThiNzItYjk0YzYxODFmYzFiXkEyXkFqcGdeQXVyNDY2MjcyOTQ@._V1_.jpg" },
+                    { title: "Fargo", description: "Dark comedy crime", image: "https://m.media-amazon.com/images/M/MV5BN2NiMGE5M2UtNWNlNC00N2Y4LTkwOWUtMDlkMzEwNTcyOTcyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg" },
+                    { title: "The Queen's Gambit", description: "Chess prodigy story", image: "https://m.media-amazon.com/images/M/MV5BM2EwMmRhMmUtMzBmMS00ZDQ3LTg4OGEtNjlkODk3ZTMxMmJlXkEyXkFqcGdeQXVyMjM5ODk1NDU@._V1_.jpg" }
+                ],
+                anime: [
+                    { title: "Death Note", description: "Psychological thriller", image: "https://m.media-amazon.com/images/M/MV5BODkzMjhjYTQtYmQyOS00NmZlLTg3Y2UtYjkzN2JkNjRkZGEwXkEyXkFqcGdeQXVyNTM4MDQ5MDc@._V1_.jpg" },
+                    { title: "Steins;Gate", description: "Time travel sci-fi", image: "https://m.media-amazon.com/images/M/MV5BMjUxMzE4ZDctODNjMS00MzIwLThjNDktODkwYjc5YWU0MDc0XkEyXkFqcGdeQXVyNjc3MjQzNTI@._V1_.jpg" },
+                    { title: "Cowboy Bebop", description: "Space western classic", image: "https://m.media-amazon.com/images/M/MV5BZjFjYWIxZjgtYzU5Ni00N2IwLWEyOGItMWE0MmMyMmY2MzVkXkEyXkFqcGdeQXVyMzgxODM4NjM@._V1_.jpg" },
+                    { title: "Psycho-Pass", description: "Cyberpunk thriller", image: "https://m.media-amazon.com/images/M/MV5BMTU1OTcwNDYzNl5BMl5BanBnXkFtZTgwNDI5MjQxMDE@._V1_.jpg" }
+                ],
+                music: [
+                    { title: "Blinding Lights - The Weeknd", description: "Modern pop hit", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Bohemian Rhapsody - Queen", description: "Classic rock", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Redbone - Childish Gambino", description: "Chill R&B", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" },
+                    { title: "Take Five - Dave Brubeck", description: "Jazz standard", image: "https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96" }
+                ]
+            }
+        };        function showRecommendations(mood) {
+            const moodTitles = {
+                happy: "Happy 😊",
+                sad: "Sad 😢",
+                angry: "Angry 😠",
+                relaxed: "Relaxed 😌",
+                excited: "Excited 🤩",
+                neutral: "Neutral 😐"
+            };            document.getElementById('mood-title').textContent = `Recommendations for ${moodTitles[mood]} Mood`;
+            const moodRecs = recommendations[mood];
+                        function createItemHTML(item) {
+                return `
+                    <div class="item">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="item-info">
+                            <h4>${item.title}</h4>
+                            <p>${item.description}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('movies').innerHTML = moodRecs.movies.map(createItemHTML).join('');
+            document.getElementById('series').innerHTML = moodRecs.series.map(createItemHTML).join('');
+                    document.getElementById('recommendations').style.display = 'block';
+                        document.getElementById('recommendations').scrollIntoView({ behavior: 'smooth' });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+        });
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        function getMoreRecommendations(mood, category) {
+            console.log(`Getting more ${category} recommendations for ${mood} mood`);
+        }
+    </script>
